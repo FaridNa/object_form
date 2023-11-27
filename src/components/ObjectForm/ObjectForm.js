@@ -1,62 +1,44 @@
-import { useState } from "react";
-import styles from "./ObjectForm.module.css";
-
-export const InputField = ({ label, type, value, onChange }) => (
-  <label className={styles.label}>
-    {label}
-    <input
-      type={type}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      className={styles.input}
-    />
-  </label>
-);
+import { useState } from 'react'
+import styles from './ObjectForm.module.css'
+import ObjectAddress from './ObjectAddress/ObjectAddress'
+import InputField from './InputField'
 
 const ObjectForm = () => {
-  const [data, setData] = useState({});
+  const [formData, setFormData] = useState({})
 
-  const handleInputChange = (text, name) => {
-    setData({ ...data, [name]: text.target.value });
-  };
+  const handleInputChange = (fieldName) => (fieldValue) => {
+    setFormData({ ...formData, [fieldName]: fieldValue })
+  }
 
   const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log(data);
-    alert(JSON.stringify(data));
-  };
+    event.preventDefault()
+    console.log(formData)
+    alert(JSON.stringify(formData))
+  }
 
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
       <InputField
-        label='Пультовый номер'
-        type='number'
-        value={data.objectNumber}
-        onChange={(e) => handleInputChange(e, "objectNumber")}
+        label="Пультовый номер"
+        type="number"
+        value={formData.objectNumber}
+        onChange={handleInputChange('objectNumber')}
       />
       <InputField
-        label='Наименование'
-        type='text'
-        value={data.objectName}
-        onChange={(e) => handleInputChange(e, "objectName")}
+        label="Наименование"
+        type="text"
+        value={formData.name}
+        onChange={handleInputChange('name')}
       />
-      <InputField
-        label='Адрес'
-        type='text'
-        value={data.objectAddress}
-        onChange={(e) => handleInputChange(e, "objectAddress")}
+      <ObjectAddress
+        handleInputChange={handleInputChange}
+        formData={formData}
       />
-      <InputField
-        label='Вход'
-        type='text'
-        value={data.objectEntrance}
-        onChange={(e) => handleInputChange(e, "objectEntrance")}
-      />
-      <button type='submit' className={styles.button}>
+      <button type="submit" className={styles.button}>
         Submit
       </button>
     </form>
-  );
-};
+  )
+}
 
-export default ObjectForm;
+export default ObjectForm
